@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Signup with OTP</title>
+  <title>OTP Signup</title>
   <style>
     body {
       font-family: Arial;
-      background: #f4f6f8;
+      background: #f2f2f2;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .container {
+    .box {
       background: white;
-      padding: 30px;
+      padding: 25px;
       border-radius: 10px;
       width: 300px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
     }
 
@@ -26,98 +24,81 @@
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
     }
 
     button {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      border: none;
-      background: #007bff;
+      background: blue;
       color: white;
-      border-radius: 5px;
+      border: none;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #0056b3;
-    }
-
-    #otpSection {
+    #otpBox {
       display: none;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+<div class="box">
   <h2>Signup</h2>
 
-  <input type="text" id="name" placeholder="Enter Name">
-  <input type="email" id="email" placeholder="Enter Email">
+  <input type="text" id="name" placeholder="Name">
+  <input type="email" id="email" placeholder="Email">
 
   <button onclick="sendOTP()">Verify Email</button>
 
-  <div id="otpSection">
+  <div id="otpBox">
     <input type="text" id="otp" placeholder="Enter OTP">
     <button onclick="verifyOTP()">Submit</button>
   </div>
 </div>
 
 <script>
-  async function sendOTP() {
-    const email = document.getElementById('email').value;
+async function sendOTP() {
+  const email = document.getElementById('email').value;
 
-    if (!email) {
-      alert("Enter email first");
-      return;
-    }
-
-    try {
-      await fetch('http://localhost:3000/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-
-      alert("OTP sent to email");
-      document.getElementById('otpSection').style.display = 'block';
-
-    } catch (err) {
-      alert("Error sending OTP");
-    }
+  if (!email) {
+    alert("Enter email first");
+    return;
   }
 
-  async function verifyOTP() {
-    const email = document.getElementById('email').value;
-    const otp = document.getElementById('otp').value;
+  const res = await fetch('/send-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
 
-    if (!otp) {
-      alert("Enter OTP");
-      return;
-    }
+  const data = await res.json();
 
-    try {
-      const res = await fetch('http://localhost:3000/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp })
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        alert("Signup Successful ✅");
-      } else {
-        alert("Invalid OTP ❌");
-      }
-
-    } catch (err) {
-      alert("Error verifying OTP");
-    }
+  if (data.success) {
+    alert("OTP sent!");
+    document.getElementById('otpBox').style.display = 'block';
+  } else {
+    alert("Error sending OTP");
   }
+}
+
+async function verifyOTP() {
+  const email = document.getElementById('email').value;
+  const otp = document.getElementById('otp').value;
+
+  const res = await fetch('/verify-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, otp })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert("Signup successful ✅");
+  } else {
+    alert("Invalid OTP ❌");
+  }
+}
 </script>
 
 </body>

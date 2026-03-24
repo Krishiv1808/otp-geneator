@@ -49,7 +49,7 @@ app.post('/send-otp', async (req, res) => {
   } catch (err) {
   console.error("OTP ERROR:", err);
   console.error(err);
-  res.json({ success: false, error: err.message });
+  res.json({ success: false, error: err });
 }
 });
 
