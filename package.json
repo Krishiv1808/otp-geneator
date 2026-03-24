@@ -1,10 +1,10 @@
 {
   "name": "otpgen",
   "version": "1.0.0",
-  "description": "",
   "main": "backend.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,15 @@
     "express": "^5.2.1",
     "nodemailer": "^8.0.3",
     "otp-generator": "^4.0.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krishiv1808/otp-geneator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Krishiv1808/otp-geneator/issues"
+  },
+  "homepage": "https://github.com/Krishiv1808/otp-geneator#readme",
+  "description": ""
 }
